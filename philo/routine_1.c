@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:33:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/01/14 15:23:39 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/01/15 18:46:41 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,9 @@ void	*monitor(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
-	(pthread_mutex_lock(&data->flexi), pthread_mutex_unlock(&data->flexi));
-	usleep(data->e_time * 1000);
+	pthread_mutex_lock(&data->flexi);
+	pthread_mutex_unlock(&data->flexi);
+	usleep(10000);
 	while (1)
 	{
 		if (check_death(data) != 0)
