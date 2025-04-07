@@ -3,53 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/17 16:35:55 by tiatan            #+#    #+#             */
-/*   Updated: 2024/10/15 12:00:14 by tiatan           ###   ########.fr       */
+/*   Created: 2024/05/15 11:50:37 by ylai              #+#    #+#             */
+/*   Updated: 2025/03/12 19:33:44 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long	ft_atol(const char *nptr)
+/**
+ * @brief	Converts the initial portion of the string pointed to by nptr to an
+ * integer.
+ * @param	nptr The string to be converted. The string may begin with an
+ * arbituary amount of white space as determined by isspace(3)
+ * 		followed by an optional minus sign or plus sign. The remainder of the
+ * 		string is converted to a long value in the obvious manner, stopping at
+ * 		the first character which is not a valid digit in the given base.
+ * @return	Returns the result of the convertion, unless the value would
+ * 		underflow or overflow.  If an underflow occurs, strtol() returns 
+ * 		LONG_MIN.
+ * 		If an overflow occurs, strtol() returns LONG_MAX.
+*/
+int	ft_atoi(const char *nptr)
 {
-	long	result;
+	long	i;
+	long	ans;
 	int		sign;
 
-	result = 0;
+	i = 0;
+	ans = 0;
 	sign = 1;
-	while (*nptr == ' ' || *nptr == '\n' || *nptr == '\t' || *nptr == '\v'
-		|| *nptr == '\f' || *nptr == '\r')
+	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
 	{
-		nptr++;
-	}
-	if (*nptr == '-' || *nptr == '+')
-	{
-		if (*nptr == '-')
+		if (nptr[i] == '-')
 			sign = -1;
-		nptr++;
+		i++;
 	}
-	while (*nptr >= '0' && *nptr <= '9')
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		result = result * 10 + (*nptr - '0');
-		nptr++;
+		ans = ans * 10 + (nptr[i] - 48);
+		i++;
 	}
-	return (result * sign);
+	if (sign == -1)
+		ans = ans * -1;
+	return (ans);
 }
-
-// #include <stdio.h>
-// int	main(int argc, char *argv[])
-// {
-// 	int	res1;
-// 	int	res2;
-
-// 	if (argc == 2)
-// 	{
-// 		res1 = ft_atoi(argv[1]);
-// 		res2 = atoi(argv[1]);
-// 		printf("%d\n", res1);
-// 		printf("%d\n", res2);
-// 	}
-// 	return (0);
-// }

@@ -3,58 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 15:50:08 by tiatan            #+#    #+#             */
-/*   Updated: 2024/05/29 15:27:59 by tiatan           ###   ########.fr       */
+/*   Created: 2024/05/13 21:53:20 by ylai              #+#    #+#             */
+/*   Updated: 2024/06/04 19:26:48 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-//#include <bsd/string.h>
-//#include <stdio.h>
 
+/**
+ * @brief Appends the src string to the dst string, and returns the total length
+ * of the string they have in common.
+ * @param dst The destination string.
+ * @param src The source string.
+ * @param size The size of the destination buffer.
+ * @return The total length of the string they have in common.
+ * @note The function first finds the length of `src`. It then iterates
+ * through dst, finding the length of dst and limiting it to be smaller or equal
+ * to size. Then, another loop iterates through src and making sure it doesnt
+ * exceed the `size` limit, while appending it to the back of dst. It then adds
+ * the null character at the back of dst, and return the total length of dst 
+ * and src. Note that length of dst is always smaller or equal to size.
+*/
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	size_t	d_len;
-	size_t	s_len;
+	size_t	dst_len;
 	size_t	i;
+	size_t	src_len;
 
-	d_len = ft_strlen(dst);
-	s_len = ft_strlen(src);
 	i = 0;
-	if (size <= d_len)
-		return (size + s_len);
-	while (src[i] != '\0' && d_len + i < size - 1)
+	dst_len = 0;
+	src_len = ft_strlen(src);
+	while (dst_len < size && dst[dst_len])
+		dst_len++;
+	if (size <= dst_len)
+		return (src_len + size);
+	while ((dst_len + i + 1) < size && src[i])
 	{
-		dst[d_len + i] = src[i];
+		dst[dst_len + i] = src[i];
 		i++;
 	}
-	if (d_len + i < size)
-		dst[d_len + i] = '\0';
-	return (d_len + s_len);
+	if (dst_len != size)
+		dst[dst_len + i] = 0;
+	return (dst_len + src_len);
 }
-
-/*int main() {
-    char dst1[20] = "Hello, ";
-    char dst2[20] = "Hello, ";
-    const char *src = "World!1234";
-    size_t size = 15;
-    
-    // Using standard strlcat
-    size_t result1 = strlcat(dst1, src, size);
-    
-    // Using custom ft_strlcat
-    size_t result2 = ft_strlcat(dst2, src, size);
-
-    // Print results
-    printf("Standard strlcat:\n");
-    printf("Result: %zu\n", result1);
-    printf("dst: %s\n\n", dst1);
-
-    printf("Custom ft_strlcat:\n");
-    printf("Result: %zu\n", result2);
-    printf("dst: %s\n", dst2);
-
-    return 0;
-}*/

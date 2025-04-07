@@ -3,35 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/28 14:39:16 by tiatan            #+#    #+#             */
-/*   Updated: 2024/05/29 16:56:27 by tiatan           ###   ########.fr       */
+/*   Created: 2024/05/22 21:28:42 by ylai              #+#    #+#             */
+/*   Updated: 2024/06/02 20:02:10 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*static void	ft_rec(int n, int fd)
-{
-	if (n > 9)
-		ft_rec(n / 10, fd);
-	ft_rec((n % 10) + '0', fd);
-}*/
-
+/**
+ * @brief Prints an integer to the given file descriptor.
+ * @param n The integer to print.
+ * @param fd The file descriptor to write to.
+ * @return None.
+*/
 void	ft_putnbr_fd(int n, int fd)
 {
-	if (n == -2147483648)
-	{
-		ft_putstr_fd("-2147483648", fd);
-		return ;
-	}
+	unsigned int	n_cpy;
+
 	if (n < 0)
 	{
-		n *= -1;
+		n_cpy = -n;
 		ft_putchar_fd('-', fd);
 	}
-	if (n > 9)
-		ft_putnbr_fd(n / 10, fd);
-	ft_putchar_fd((n % 10) + '0', fd);
+	else
+	{
+		n_cpy = n;
+	}
+	if (n_cpy < 10)
+	{
+		ft_putchar_fd((n_cpy + 48), fd);
+	}
+	else
+	{
+		ft_putnbr_fd((n_cpy / 10), fd);
+		ft_putnbr_fd((n_cpy % 10), fd);
+	}
 }

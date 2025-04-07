@@ -3,16 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.your42network>      +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 11:23:29 by tiatan            #+#    #+#             */
-/*   Updated: 2024/05/21 10:55:48 by tiatan           ###   ########.fr       */
+/*   Created: 2024/05/13 15:23:34 by ylai              #+#    #+#             */
+/*   Updated: 2024/06/02 19:55:29 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Checks if a given character is alphabetic (a-z, A-Z).
+ * @param c The character to check. Uses ft_islower() and ft_isupper().
+ * @return 1 if the character is alphabetic, 0 otherwise.
+*/
 int	ft_isalpha(int c)
 {
-	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
+	if ((ft_islower(c)) || (ft_isupper(c)))
+	{
+		return (1);
+	}
+	return (0);
 }

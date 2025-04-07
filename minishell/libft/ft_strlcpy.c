@@ -3,30 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.your42network>      +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 21:06:40 by tiatan            #+#    #+#             */
-/*   Updated: 2024/05/17 17:42:21 by tiatan           ###   ########.fr       */
+/*   Created: 2024/05/13 21:00:58 by ylai              #+#    #+#             */
+/*   Updated: 2024/06/02 20:11:31 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Copies at most size - 1 characters from the string src to dst,
+ * including the terminating null byte ('\0').
+ * @param dst The destination string.
+ * @param src The source string.
+ * @param size The size of the destination buffer.
+ * @return The total length of the string they have in common.
+ * @note The function copies at most size - 1 characters from the string src
+ * to dst, including the terminating null byte ('\0').
+*/
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	size_t	len;
+	size_t	i;
+	size_t	src_l;
 
-	len = ft_strlen(src);
-	if (size == 0)
-		return (len);
-	if (size > len + 1)
+	i = 0;
+	src_l = ft_strlen(src);
+	if (size > 0)
 	{
-		ft_memcpy(dst, src, len + 1);
+		while (i < (size - 1) && src[i])
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
 	}
-	else
-	{
-		ft_memcpy(dst, src, size - 1);
-		dst[size - 1] = '\0';
-	}
-	return (len);
+	return (src_l);
 }

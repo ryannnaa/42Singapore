@@ -3,63 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 13:42:01 by tiatan            #+#    #+#             */
-/*   Updated: 2024/05/31 10:58:44 by tiatan           ###   ########.fr       */
+/*   Created: 2024/05/21 02:36:08 by ylai              #+#    #+#             */
+/*   Updated: 2024/06/04 15:40:09 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-//#include <stdio.h>
-//#include <string.h>
 
-static int	check_set(char const *set, char const s1)
-{
-	while (*set != '\0')
-	{
-		if (s1 == *set)
-			return (1);
-		set++;
-	}
-	return (0);
-}
-
+/**
+ * @brief Removes leading and trailing characters from a string.
+ * @param s1 The string to trim.
+ * @param set The set of characters to remove.
+ * @return The trimmed string.
+ * @note The function first finds the length of s1. It then iterates through
+ * the string from the beginning and from the end and finds the last time the
+ * character set is found in the string. That point is the start of the 
+ * trimmed string. Then, it interates through the string from end to start
+ * and finds the first time the character set is found in the string. That
+ * point is the end of the trimmed string. If the first point reach the end
+*/
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	char		*dest;
-	size_t		len;
-	char const	*start;
-	char const	*end;
+	size_t	len;
+	char	*t_set;
+	size_t	i;
+	size_t	j;
+	size_t	size;
 
-	start = s1;
-	while (*start != '\0' && check_set(set, *start) == 1)
+	len = 0;
+	i = 0;
+	j = 0;
+	t_set = (char *)set;
+	len = ft_strlen(s1);
+	while (i < len && ft_strchr(t_set, s1[i]) != NULL)
 	{
-		start++;
+		i++;
 	}
-	end = s1 + ft_strlen(s1) - 1;
-	while (end > start && check_set(set, *end) == 1)
+	while (j < len && ft_strrchr(t_set, s1[len - j - 1]) != NULL)
 	{
-		end--;
+		j++;
 	}
-	len = end - start + 1;
-	dest = (char *)malloc(sizeof(char) * (len + 1));
-	if (dest == NULL)
-		return (NULL);
-	ft_memcpy(dest, start, len);
-	dest[len] = '\0';
-	return (dest);
+	if (i == len && j == len)
+		return (ft_substr(s1, 0, 0));
+	size = len - i - j;
+	return (ft_substr(s1 + i, 0, size));
 }
-
-/*int	main(int argc, char *argv[])
-{
-	char	*res;
-
-	if (argc == 3)
-	{
-		res = ft_strtrim(argv[1], argv[2]);
-		printf("String before trim: %s\n", argv[1]);
-		printf("String after trim: %s\n", res);
-	}
-	return (0);
-}*/

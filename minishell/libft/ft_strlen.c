@@ -3,40 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.your42network>      +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 12:01:24 by tiatan            #+#    #+#             */
-/*   Updated: 2024/05/23 10:44:45 by tiatan           ###   ########.fr       */
+/*   Created: 2024/05/13 16:46:04 by ylai              #+#    #+#             */
+/*   Updated: 2024/06/02 20:13:17 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-//#include <stdio.h>
-//#include <string.h>
 
-size_t	ft_strlen(const char *s)
+/**
+ * @brief Returns the length of a string.
+ * @param str The string to get the length of.
+ * @return The length of the string.
+ * @note This function returns 0 if the string is NULL.
+ * @note This function returns 0 if the string is empty.
+ * @note This function returns 1 if the string is a single character.
+ * @note This function returns the length of the string if it is longer than 1.
+*/
+size_t	ft_strlen(const char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (s[i] != '\0')
-	{
+	while (*str++)
 		i++;
-	}
 	return (i);
 }
-
-/*int	main(int argc, char *argv[])
-{
-	size_t	res1;
-	size_t	res2;
-
-	if (argc == 2)
-	{
-		res1 = ft_strlen(argv[1]);
-		res2 = strlen(argv[1]);
-		printf("%lu", res1);
-		printf("%lu", res2);
-	}
-	return 0;
-}*/

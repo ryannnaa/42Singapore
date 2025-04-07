@@ -1,68 +1,88 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/08 15:53:38 by tiatan            #+#    #+#              #
-#    Updated: 2025/01/20 18:21:59 by tiatan           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME := minishell
+CC := cc
+CFLAGS := -Wall -Werror -Wextra -g
+SRC_FOLDER := src
+LIBFT_FOLDER := libft
+LIBFT := ${LIBFT_FOLDER}/libft.a
+# MAIN_FILE := ${SRC_FOLDER}/main.c
 
-# Compiler and flags
-CC				= cc
-CFLAGS			= -Wall -Werror -Wextra -g
+EXEC_FOLDER := ${addprefix ${SRC_FOLDER}, /execution/}
+EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c exec_utils.c exec_err.c
+EXEC_FILES := ${addprefix ${EXEC_FOLDER}, ${EXEC_FILENAMES}}
 
-# Directories
-LIBFT_DIR		= libft
-LIBPRINTF_DIR	= libprintf
+ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
+ERROR_FILENAMES := free_1.c free_2.c free_every.c
+ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
 
-# Static Libraries
-LIBFT_A			= $(LIBFT_DIR)/libft.a
-LIBPRINTF_A		= $(LIBPRINTF_DIR)/libprintf.a
+PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
+PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c rd_expand.c \
+									 expand_utils.c expand_utils2.c heredoc.c heredoc_utils.c
+PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
 
-# Main Program
-SRCS			= 
-#B_SRCS			= pipex_bonus.c pipex_utils_bonus.c pipex_utils_2_bonus.c pipex_errors_bonus.c
-OBJS			= $(SRCS:.c=.o)
-#B_OBJS			= $(B_SRCS:.c=.o)
-INCLUDES		= -I./header/
-NAME			= minishell
+LEX_FOLDER := ${addprefix ${SRC_FOLDER}, /lexing/}
+LEX_FILENAMES := lex.c lex_utils.c lex_utils2.c
+LEX_FILES := ${addprefix ${LEX_FOLDER}, ${LEX_FILENAMES}}
 
-# Default Rule
-all:			$(NAME)
+SIGS_FOLDER := ${addprefix ${SRC_FOLDER}, /signals/}
+SIGS_FILENAMES := signals.c signals2.c
+SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
-# Bonus Rule
-bonus:			$(B_OBJS) $(LIBFT_A) $(LIBPRINTF_A)
-				$(CC) $(CFLAGS) -o $(NAME) $(B_OBJS) -L$(LIBFT_DIR) -L$(LIBPRINTF_DIR) -lft -lprintf
+UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
+UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c split_args.c \
+									strcjoin.c ft_split_app.c ft_strdup_app.c \
+									is_flag.c ft_atoll.c
+UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
-# Ensure libraries are built
-$(LIBFT_A):
-				$(MAKE) -C $(LIBFT_DIR)
-	
-$(LIBPRINTF_A):
-				$(MAKE) -C $(LIBPRINTF_DIR)
+INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}
+INIT_FILENAMES := init.c init_shell.c
+INIT_FILES := ${addprefix ${INIT_FOLDER}, ${INIT_FILENAMES}}
 
-# Rule to build the executable
-$(NAME):		$(OBJS) $(LIBFT_A) $(LIBPRINTF_A)
-				$(CC) $(CFLAGS) -o $@ $^ -L$(LIBFT_DIR) -L$(LIBPRINTF_DIR) -lft -lprintf
+TOKENS_FOLDER := ${addprefix ${SRC_FOLDER}, /tokens/}
+TOKENS_FILENAMES := check_line.c
+TOKENS_FILES := ${addprefix ${TOKENS_FOLDER}, ${TOKENS_FILENAMES}}
 
-# Pattern rule to compile main program
-%.o:			%.c 
-				$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
+ENV_FOLDER := ${addprefix ${SRC_FOLDER}, /env/}
+ENV_FILENAMES := setup_env.c free_env.c print_env.c add_env.c \
+									check_env.c del_env.c find_env.c update_env.c fill_env.c \
+									add_env_help.c print_export.c
+ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
 
-# Other Rules
+BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}
+BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c bi_cd.c bi_echo.c bi_exit.c \
+											bi_unset.c bi_dot.c bi_exit_helper.c
+BUILTINS_FILES := ${addprefix ${BUILTINS_FOLDER}, ${BUILTINS_FILENAMES}}
+
+MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
+MAIN_FILENAMES := loop.c main.c
+MAIN_FILES := ${addprefix ${MAIN_FOLDER}, ${MAIN_FILENAMES}}
+
+SRC_FILES := ${PARSE_FILES} ${LEX_FILES} ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} \
+						${INIT_FILES} ${TOKENS_FILES} ${ENV_FILES} \
+						${BUILTINS_FILES} ${ERROR_FILES} ${EXEC_FILES}
+
+OBJS := ${SRC_FILES:.c=.o}
+
+all: ${LIBFT} ${NAME}
+
 clean:
-				@/bin/rm -f $(OBJS) $(B_OBJS)
-				$(MAKE) -C $(LIBFT_DIR) clean
-				$(MAKE) -C $(LIBPRINTF_DIR) clean
+	@make -C ${LIBFT_FOLDER} clean
+	rm -f ${OBJS}
 
-fclean:			clean
-				@/bin/rm -f $(NAME)
-				$(MAKE) -C $(LIBFT_DIR) fclean
-				$(MAKE) -C $(LIBPRINTF_DIR) fclean
+fclean: clean
+	@make -C ${LIBFT_FOLDER} fclean
+	rm -f ${NAME}
 
-re:				fclean all
+re: fclean all
 
-.PHONY:			all clean fclean re
+
+${LIBFT}:
+	@make -C ${LIBFT_FOLDER} all
+	@make -C ${LIBFT_FOLDER} bonus
+
+${NAME}: ${OBJS}
+	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -lreadline -o $@
+
+%.o: %.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+.PHONY: all clean fclean re
